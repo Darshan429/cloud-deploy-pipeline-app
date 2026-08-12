@@ -1,0 +1,22 @@
+{
+  "name": "clouddeploy-notes-api",
+  "version": "1.0.0",
+  "description": "Notes API used as the deployment target for the CloudDeploy CI/CD pipeline project",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "jest --coverage",
+    "dev": "node src/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "prom-client": "^15.1.3"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}
