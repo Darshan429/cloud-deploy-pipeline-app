@@ -1,0 +1,6 @@
+# Copy this file to terraform.tfvars and fill in your own values.
+# terraform.tfvars is gitignored — never commit it, it can contain
+# machine-specific / semi-sensitive values.
+
+my_ip    = "203.0.113.10"      # get yours from https://checkip.amazonaws.com
+key_name = "my-ec2-keypair"    # must already exist in the AWS console, same region
