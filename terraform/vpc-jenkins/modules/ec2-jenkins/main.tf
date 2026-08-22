@@ -32,7 +32,7 @@ resource "aws_security_group" "jenkins" {
   }
 
     ingress {
-    description = "GitHub webhook (broader than the rules above, on purpose — see comment)"
+    description = "GitHub webhook"
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
