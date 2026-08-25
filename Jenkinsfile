@@ -26,7 +26,7 @@ pipeline {
         steps {
             script {
                 docker.image('node:20-alpine').inside('-e HOME=/tmp') {
-                sh 'npm install'
+                sh 'npm ci'
             }
         }
         }
