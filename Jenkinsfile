@@ -22,31 +22,25 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    // Runs npm install inside a throwaway Node container —
-                    // Jenkins itself never needs Node.js installed on the
-                    // host. Requires the Docker Pipeline plugin (installed
-                    // in Milestone 2) and Jenkins' docker group membership.
-                    docker.image('node:20-alpine').inside {
-                        sh 'npm install'
-                    }
-                }
+    stage('Install Dependencies') {
+        steps {
+            script {
+                docker.image('node:20-alpine').inside('-e HOME=/tmp') {
+                sh 'npm install'
             }
         }
+        }
+    }
 
         stage('Unit Test') {
-            steps {
-                script {
-                    docker.image('node:20-alpine').inside {
-                        sh 'npm test'
-                    }
-                }
-                // This is the fail-fast gate: if any test fails, the
-                // pipeline stops here and never builds/pushes an image.
+    steps {
+        script {
+            docker.image('node:20-alpine').inside('-e HOME=/tmp') {
+                sh 'npm test'
             }
         }
+    }
+}
 
         stage('Build Docker Image') {
             steps {
