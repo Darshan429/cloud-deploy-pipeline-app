@@ -7,7 +7,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
 
         // CHANGE THIS to your actual Docker Hub username/repo.
-        IMAGE_NAME = 'YOUR_DOCKERHUB_USERNAME/clouddeploy-notes-api'
+        IMAGE_NAME = 'darshan99015/clouddeploy-notes-api'
 
         // Short commit SHA makes each image traceable back to the exact
         // commit that produced it — this is the "traceability" point
