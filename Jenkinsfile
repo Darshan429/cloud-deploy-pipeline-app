@@ -48,6 +48,26 @@ pipeline {
             }
         }
 
+        stage('Trivy Scan') {
+            steps {
+                sh """
+                    docker run --rm \
+                        -v /var/run/docker.sock:/var/run/docker.sock \
+                        -v trivy-cache:/root/.cache/ \
+                        aquasec/trivy:latest image \
+                        --severity CRITICAL \
+                        --exit-code 1 \
+                        --no-progress \
+                        ${IMAGE_NAME}:${IMAGE_TAG}
+                """
+                // --exit-code 1 means: if any CRITICAL vulnerability is
+                // found, this stage fails and the pipeline stops here —
+                // the image never gets pushed. Start this in report-only
+                // mode first (drop --exit-code) until you've triaged your
+                // base image's existing CVEs, then turn enforcement on.
+            }
+        }
+
         // Milestone 4 will insert a Trivy Scan stage right here, between
         // build and push — deliberately left out for now.
 
