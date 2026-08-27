@@ -47,7 +47,7 @@ pipeline {
                 sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest ."
             }
         }
-
+    //added trivy scan
         stage('Trivy Scan') {
             steps {
                 sh """
