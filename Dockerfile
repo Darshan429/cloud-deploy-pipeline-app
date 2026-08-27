@@ -1,14 +1,16 @@
 # --- Build stage: install deps (including dev deps) and run in a full image ---
 FROM node:20-alpine AS build
 WORKDIR /usr/src/app
+RUN npm install -g npm@10.9.9
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
 
 # --- Runtime stage: only production deps, slim image, non-root user ---
 FROM node:20-alpine AS runtime
 WORKDIR /usr/src/app
 ENV NODE_ENV=production
+RUN npm install -g npm@10.9.9
 COPY package*.json ./
 RUN npm install --omit=dev && npm cache clean --force
 COPY --from=build /usr/src/app/src ./src
