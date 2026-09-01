@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clouddeploy-notes-api
+  labels:
+    app: clouddeploy-notes-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: clouddeploy-notes-api
+  template:
+    metadata:
+      labels:
+        app: clouddeploy-notes-api
+    spec:
+      containers:
+        - name: notes-api
+          # This IMAGE_PLACEHOLDER gets substituted by the Jenkinsfile's
+          # sed command at deploy time. For local Minikube testing, replace
+          # it manually with darshan99015/clouddeploy-notes-api:latest.
+          image: darshan99015/clouddeploy-notes-api:latest
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: clouddeploy-config
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "300m"
+              memory: "256Mi"
+          # Readiness gates traffic: a pod that hasn't passed this yet
+          # never receives requests from the Service, even if it's Running.
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          # Liveness restarts a pod that's stuck/unresponsive, even if it
+          # already passed readiness once before.
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10

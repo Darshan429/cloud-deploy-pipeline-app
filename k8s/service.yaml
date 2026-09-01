@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: clouddeploy-notes-api
+spec:
+  selector:
+    app: clouddeploy-notes-api
+  ports:
+    - port: 80
+      targetPort: 3000
+      nodePort: 30080
+  # NodePort is the simplest option for a single-node/small cluster demo —
+  # exposes the app on every node's IP at port 30080, no extra controller
+  # or cloud load balancer needed. An Ingress (nginx-ingress) is the more
+  # "production" pattern — listed as Good to Have, not required.
+  type: NodePort
